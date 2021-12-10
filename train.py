@@ -18,11 +18,11 @@ from model import LinearLP
 def main(
         dataset: str = 'boston',
         gpus: Optional[int] = None,
-        epochs: int = 1,
+        epochs: int = 5,
         learning_rate: float = 0.001,
         momentum: float = 0.9,
-        batch_size: int = 32,
-        num_workers: int = 1
+        batch_size: int = 256,
+        num_workers: int = 2
     ):
     """[summary]
 

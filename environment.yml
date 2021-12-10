@@ -25,4 +25,5 @@ dependencies:
     - qtorch
     - argparse
     - pytorch-lightning-bolts
+    - gym
     

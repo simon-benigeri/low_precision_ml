@@ -35,19 +35,19 @@ class LinearLP(pl.LightningModule):
 
         # metrics
         self.train_mse = MeanSquaredError()
-        self.train_mean_squared_log_error = MeanSquaredLogError()
-        self.train_mae = MeanAbsoluteError()
-        self.train_r2_score = R2Score()
+        # self.train_msle = MeanSquaredLogError()
+        # self.train_mae = MeanAbsoluteError()
+        # self.train_r2_score = R2Score()
 
         self.val_mse = MeanSquaredError()
-        self.val_msle = MeanSquaredLogError()
-        self.val_mae = MeanAbsoluteError()
-        self.val_r2_score = R2Score()
+        # self.val_msle = MeanSquaredLogError()
+        # self.val_mae = MeanAbsoluteError()
+        # self.val_r2_score = R2Score()
 
         self.test_mse = MeanSquaredError()
-        self.test_msle = MeanSquaredLogError()
-        self.test_mae = MeanAbsoluteError()
-        self.test_r2_score = R2Score()        
+        # self.test_msle = MeanSquaredLogError()
+        # self.test_mae = MeanAbsoluteError()
+        # self.test_r2_score = R2Score()
     
     def forward(self, x: Tensor) -> Tensor:
         out = self.linear(x)
@@ -63,39 +63,41 @@ class LinearLP(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         # training_step defines the train loop. It is independent of forward
         inputs, targets = batch
+        targets = targets.unsqueeze(-1)
         outputs = self.forward(inputs)
 
         loss = self.mse_loss(outputs, targets)
         self.log("train loss", loss, on_step=True, on_epoch=True)
 
         self.log("train performance", {
-            "train_mse": self.train_mse(outputs, targets),
-            "train_msle": self.train_msle(outputs, targets),
-            "train_mae": self.train_mae(outputs, targets),
-            "train_r2": self.train_r2_score(outputs, targets)
+            "train_mse": self.train_mse(outputs, targets)# ,
+            # "train_msle": self.train_msle(outputs, targets),
+            # "train_mae": self.train_mae(outputs, targets),
+            # "train_r2": self.train_r2_score(outputs, targets)
         }, on_step=True, on_epoch=True)
 
         return loss
 
     def training_epoch_end(self, outs):
         # log epoch metric
-        self.log('train_mse_epoch', self.mse.compute())
-        self.log('train_msle_epoch', self.msle.compute())
-        self.log('train_mae_epoch', self.mae.compute())
-        self.log('train_r2_epoch', self.r2_score.compute())
+        self.log('train_mse_epoch', self.train_mse.compute())
+        # self.log('train_msle_epoch', self.train_msle.compute())
+        # self.log('train_mae_epoch', self.train_mae.compute())
+        # self.log('train_r2_epoch', self.train_r2_score.compute())
 
     def validation_step(self, batch, batch_idx):
         inputs, targets = batch
+        targets = targets.unsqueeze(-1)
         outputs = self.forward(inputs)
         
         loss = self.mse_loss(outputs, targets)
         self.log("val loss", loss, on_step=True, on_epoch=True)
 
         self.log("val performance", {
-            "val_mse": self.val_mse(outputs, targets),
-            "val_msle": self.val_msle(outputs, targets),
-            "val_mae": self.val_mae(outputs, targets),
-            "val_r2": self.val_r2_score(outputs, targets)
+            "val_mse": self.val_mse(outputs, targets)# ,
+            # "val_msle": self.val_msle(outputs, targets),
+            # "val_mae": self.val_mae(outputs, targets),
+            # "val_r2": self.val_r2_score(outputs, targets)
         }, on_step=True, on_epoch=True)
         
         return loss
@@ -103,22 +105,23 @@ class LinearLP(pl.LightningModule):
     def validation_epoch_end(self, outs):
         # log epoch metric
         self.log('val_mse_epoch', self.val_mse.compute())
-        self.log('val_msle_epoch', self.val_msle.compute())
-        self.log('val_mae_epoch', self.val_mae.compute())
-        self.log('val_r2_epoch', self.val_r2_score.compute())
+        # self.log('val_msle_epoch', self.val_msle.compute())
+        # self.log('val_mae_epoch', self.val_mae.compute())
+        # self.log('val_r2_epoch', self.val_r2_score.compute())
 
     def test_step(self, batch, batch_idx):
         inputs, targets = batch
+        targets = targets.unsqueeze(-1)
         outputs = self.forward(inputs)
         
         loss = self.mse_loss(outputs, targets)
         self.log("test loss", loss, on_step=True, on_epoch=True)
 
         self.log("test performance", {
-            "test_mse": self.test_mse(outputs, targets),
-            "test_msle": self.test_msle(outputs, targets),
-            "test_mae": self.test_mae(outputs, targets),
-            "test_r2": self.test_r2_score(outputs, targets)
+            "test_mse": self.test_mse(outputs, targets)# ,
+            # "test_msle": self.test_msle(outputs, targets),
+            # "test_mae": self.test_mae(outputs, targets),
+            # "test_r2": self.test_r2_score(outputs, targets)
         }, on_step=True, on_epoch=True)
         
         return loss
