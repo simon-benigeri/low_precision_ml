@@ -31,7 +31,7 @@ def make(config):
     return model, train_dataloader, test_dataloader, criterion, optimizer
 
 
-def model_pipeline(config):
+def model_pipeline(config) -> nn.Module:
     # tell wandb to get started
     with wandb.init(project="low-precision-ml", entity="simonbenigeri", config=config):
         # access all HPs through wandb.config, so logging matches execution!
@@ -39,7 +39,7 @@ def model_pipeline(config):
 
         # make the model, data, and optimization problem
         model, train_dataloader, test_dataloader, criterion, optimizer = make(config)
-        print(model)
+        # print(model)
 
         # and use them to train the model
         train(model, train_dataloader, criterion, optimizer, config)
@@ -52,7 +52,7 @@ def model_pipeline(config):
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='This app showcases a dope CIFAR10 classifier')
+    parser = argparse.ArgumentParser(description='Train a linear regression model.')
 
     parser.add_argument('--dataset', type=str, default='boston')
     parser.add_argument('--epochs', type=int, default=100)

@@ -2,9 +2,7 @@ import torch.nn as nn
 from torch import Tensor
 from qtorch.quant import Quantizer, quantizer
 from qtorch.optim import OptimLP
-from torch.optim import SGD
 from qtorch import FloatingPoint, FixedPoint
-
 
 class LinearLP(nn.Module):
     """

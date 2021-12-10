@@ -1,9 +1,7 @@
-from typing import Optional
-
+from typing import Tuple
 import numpy as np
 import torch
-import pytorch_lightning as pl
-from torch.utils.data import random_split, DataLoader, Dataset
+from torch.utils.data import DataLoader, Dataset
 
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_boston, load_diabetes
@@ -23,10 +21,10 @@ class RegressionDataset(Dataset):
         
         return features, target
 
-def make_dataloader(dataset: RegressionDataset, batch_size: int):
+def make_dataloader(dataset: RegressionDataset, batch_size: int) -> DataLoader:
     return DataLoader(dataset, batch_size=batch_size, pin_memory=True, num_workers=2)
 
-def get_data(dataset: str='toy', test_split: float=0.4, val_split: float=0.5):
+def get_data(dataset: str='toy', test_split: float=0.4) -> Tuple[RegressionDataset, RegressionDataset]:
     if dataset == 'toy':
         # create dummy data for training
         x_values = [i for i in range(11)]
