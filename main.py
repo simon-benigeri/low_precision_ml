@@ -3,16 +3,14 @@ import yaml
 import wandb
 import torch
 import torch.nn as nn
-from qtorch.quant import Quantizer, quantizer
-from qtorch.optim import OptimLP
-from qtorch import FloatingPoint, FixedPoint
 
 from data import make_dataloader, get_data
 from train import train
 from test import test
-
+from quantize import make_quantizer
 from model import LinearLP
 
+# get the quantize config
 with open("quantize_config.yml", "r") as ymlfile:
     quantize_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
@@ -24,16 +22,7 @@ def make(config):
     test_dataloader = make_dataloader(test, batch_size=config.batch_size)
 
     # Make the quantizer
-    # TODO: handle different permutations as user input. User config for this
-    Q = None
-    if config.quantize:
-        precision = quantize_config['PRECISION']
-        exp = quantize_config[precision]['exp']
-        man = quantize_config[precision]['man']
-        rounding = quantize_config[precision]['rounding']
-        lp_float = FloatingPoint(exp=exp, man=man)
-        Q = Quantizer(forward_number=lp_float, backward_number=lp_float,
-                      forward_rounding=rounding, backward_rounding=rounding)
+    Q = make_quantizer(config)
 
     # Make the model
     model = LinearLP(input_dim=train.X[0].size, quant=Q).to(config.device)
