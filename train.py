@@ -9,11 +9,26 @@ def train(model, loader, criterion, optimizer, config):
     # Run training and track with wandb
     # total_batches = len(loader) * config.epochs
     for epoch in tqdm(range(config.epochs)):
-        for _, (inputs, targets) in enumerate(loader):
+        epoch_mse = 0
+        for batch_idx, (inputs, targets) in enumerate(loader):
 
             loss = train_batch(inputs, targets, model, optimizer, criterion, config)
-            wandb.log({"train mse loss": loss.item()})
-            wandb.log({"train rmse": np.sqrt(loss.item())})
+
+            if batch_idx % 1 == 0:
+                print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                    epoch, batch_idx * len(inputs), len(loader.dataset),
+                           100. * batch_idx / len(loader), loss.item()))
+                wandb.log({"Train MSE": loss.item()})
+                wandb.log({"Train RMSE": np.sqrt(loss.item())})
+
+            # add loss for epoch loss
+            epoch_mse += loss.item()
+
+        epoch_mse /= len(loader.dataset)
+        epoch_rmse = np.sqrt(epoch_mse)
+        wandb.log({
+            "Train MSE - epoch": epoch_mse,
+            "Train RMSE- epoch": epoch_rmse})
 
 
 
