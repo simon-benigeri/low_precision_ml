@@ -69,7 +69,7 @@ class LinearLP(pl.LightningModule):
         outputs = self.forward(inputs)
 
         loss = self.mse_loss(outputs, targets)
-        self.log("train loss", loss, on_step=True, on_epoch=True)
+        self.log("train loss", loss.item(), on_step=True, on_epoch=True)
 
         # self.log("train performance", {
             # "train_mse": self.train_mse(outputs, targets)# ,
@@ -94,7 +94,7 @@ class LinearLP(pl.LightningModule):
         outputs = self.forward(inputs)
         
         loss = self.mse_loss(outputs, targets)
-        self.log("val loss", loss, on_step=True, on_epoch=True)
+        self.log("val loss", loss.item(), on_step=True, on_epoch=True)
 
         # self.log("val performance", {
             # "val_mse": self.val_mse(outputs, targets)# ,
@@ -119,7 +119,7 @@ class LinearLP(pl.LightningModule):
         outputs = self.forward(inputs)
         
         loss = self.mse_loss(outputs, targets)
-        self.log("test loss", loss, on_step=True, on_epoch=True)
+        self.log("test loss", loss.item(), on_step=True, on_epoch=True)
 
         # self.log("test performance", {
             # "test_mse": self.test_mse(outputs, targets)# ,
@@ -135,4 +135,5 @@ class LinearLP(pl.LightningModule):
 
     def configure_optimizers(self):
         # return optim.Adam(self.parameters(), lr=self.hparams.learning_rate)
-        return optim.SGD(self.parameters(), lr=self.hparams.learning_rate, momentum=self.hparams.momentum)
+        # return optim.SGD(self.parameters(), lr=self.hparams.learning_rate, momentum=self.hparams.momentum)
+        return optim.SGD(self.parameters(), lr=self.hparams.learning_rate)

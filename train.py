@@ -45,11 +45,11 @@ def main(
         input_dim = 10
 
     # create dummy data for training
-    x_values = [i for i in range(100)]
+    x_values = [i for i in range(20)]
     x_train = np.array(x_values, dtype=np.float32)
     x_train = x_train.reshape(-1, 1)
 
-    y_values = [2 * i + 1 for i in x_values]
+    y_values = [i + 1 for i in x_values]
     y_train = np.array(y_values, dtype=np.float32)
     # y_train = y_train.reshape(-1, 1)
 
@@ -73,10 +73,10 @@ if __name__ == "__main__":
     parser.add_argument('--epochs', type=int, default=5)
     parser.add_argument('--learning-rate', type=float, default=0.01)
     parser.add_argument('--momentum', type=float, default=0.9)
-    parser.add_argument('--batch-size', type=int, default=257)
+    parser.add_argument('--batch-size', type=int, default=20)
     parser.add_argument('--num-workers', type=int, default=4)
     # parser.add_argument('--gpus', type=int, default=None)
 
     args = parser.parse_args()
-    main(args.dataset, args.epochs, args.learning_rate, args.momentum, args.batch_size, args.num_workers)
-
+    # main(args.dataset, args.epochs, args.learning_rate, args.momentum, args.batch_size, args.num_workers)
+    main('boston', 5, 0.01, 0.9, 20, 4)
