@@ -1,0 +1,22 @@
+# Data processing
+QUANTIZE: True
+PRECISION: 'FP16'
+FP16: {
+        'exp': 6,
+        'man': 9,
+        'rounding': 'nearest'
+}
+FP8: {
+        'exp': 6,
+        'man': 9,
+        'rounding': 'nearest'
+}
+ROUNDING: 'nearest' # or 'stochastic'
+OPTMIZER: {
+
+}
+HYPERPARAMS: {
+  'learning_rate': 0.01,
+  'batch_size': 32,
+  'epochs': 30
+}

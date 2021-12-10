@@ -1,4 +1,5 @@
 import argparse
+import yaml
 import wandb
 import torch
 import torch.nn as nn
@@ -12,6 +13,8 @@ from test import test
 
 from model import LinearLP
 
+with open("quantize_config.yml", "r") as ymlfile:
+    quantize_config = yaml.load(ymlfile, Loader=yaml.FullLoader)
 
 def make(config):
     # Make the data
@@ -24,9 +27,13 @@ def make(config):
     # TODO: handle different permutations as user input. User config for this
     Q = None
     if config.quantize:
-        bit_16 = FloatingPoint(exp=6, man=9)
-        Q = Quantizer(forward_number=bit_16, backward_number=bit_16,
-                      forward_rounding="nearest", backward_rounding="nearest")
+        precision = quantize_config['PRECISION']
+        exp = quantize_config[precision]['exp']
+        man = quantize_config[precision]['man']
+        rounding = quantize_config[precision]['rounding']
+        lp_float = FloatingPoint(exp=exp, man=man)
+        Q = Quantizer(forward_number=lp_float, backward_number=lp_float,
+                      forward_rounding=rounding, backward_rounding=rounding)
 
     # Make the model
     model = LinearLP(input_dim=train.X[0].size, quant=Q).to(config.device)
@@ -81,7 +88,7 @@ if __name__ == "__main__":
         learning_rate = args.learning_rate,
         batch_size = args.batch_size,
         quantize = args.quantize,
-        test_split= 0.4
+        test_split= 0.4,
+        quantize_config=quantize_config
     )
     model_pipeline(config)
-
