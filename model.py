@@ -1,8 +1,6 @@
 import torch.nn as nn
 from torch import Tensor
-from qtorch.quant import Quantizer, quantizer
-from qtorch.optim import OptimLP
-from qtorch import FloatingPoint, FixedPoint
+from qtorch.quant import Quantizer
 
 class LinearLP(nn.Module):
     """
@@ -19,3 +17,4 @@ class LinearLP(nn.Module):
         if self.quant:
             out = self.quant(out)
         return out
+

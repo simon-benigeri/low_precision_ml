@@ -15,6 +15,7 @@ Arguments:
 * `epochs`: number of epochs, default value is `5`
 * `learning-rate`: learning rate for SGD, default value is `0.01`
 * `batch-size`: batch size for minibatch SGD, default value is `256`
+* `quantize`: if `True`  we quantize. For now this is some default quantization behavior
 
 ## Before you run the script
 Go to `train.py` line 34. Make sure that in the following code line has **YOUR wandb project and entity info**.
