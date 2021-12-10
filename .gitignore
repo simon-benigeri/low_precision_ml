@@ -1,2 +1,19 @@
+# Data files
+data
+saved
+
+# .idea
+.idea
+
+# vscode
+.vscode
+
+.DS_STORE
+/logs/
+
+/lightning_logs/
+/linear_lp
+/wandb
 
 .ipynb_checkpoints/*
+*.pyc

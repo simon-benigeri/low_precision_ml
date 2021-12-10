@@ -9,15 +9,20 @@ dependencies:
   - pip
   - numpy
   - jupyterlab
-  - tqdm
-  - scikit-learn
-  - wandb
   - pytorch
   - torchvision
+  - pytorch-lightning
+  - tqdm
+  - black
+  - matplotlib
+  - scikit-learn
+  - wandb
   - sphinx>=1.4
   - ipykernel
   - nbsphinx
   - tabulate
   - pip:
     - qtorch
+    - argparse
+    - pytorch-lightning-bolts
     
