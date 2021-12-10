@@ -1,5 +1,6 @@
 import os
 import argparse
+import numpy as np
 
 from datetime import datetime
 from pathlib import Path
@@ -17,13 +18,13 @@ from model import LinearLP
 
 def main(
         dataset: str = 'boston',
-        gpus: Optional[int] = None,
         epochs: int = 5,
-        learning_rate: float = 0.001,
+        learning_rate: float = 0.01,
         momentum: float = 0.9,
         batch_size: int = 256,
-        num_workers: int = 2
-    ):
+        num_workers: int = 2,
+        gpus: Optional[int] = None
+):
     """[summary]
 
     Args:
@@ -42,7 +43,19 @@ def main(
         input_dim = 13
     elif dataset == 'diabetes':
         input_dim = 10
-    loaders = SklearnDataModule(X, y, val_split=0.2, test_split=0.1, random_state=42, batch_size=batch_size, num_workers=num_workers)
+
+    # create dummy data for training
+    x_values = [i for i in range(100)]
+    x_train = np.array(x_values, dtype=np.float32)
+    x_train = x_train.reshape(-1, 1)
+
+    y_values = [2 * i + 1 for i in x_values]
+    y_train = np.array(y_values, dtype=np.float32)
+    # y_train = y_train.reshape(-1, 1)
+
+    input_dim = 1
+
+    loaders = SklearnDataModule(x_train, y_train, val_split=0.2, test_split=0.1, random_state=42, batch_size=batch_size, num_workers=num_workers)
     
     model = LinearLP(input_dim=input_dim, dataset=dataset, learning_rate=learning_rate, momentum=momentum)
     trainer = Trainer(max_epochs=epochs, logger=WandbLogger(project="low-precision-ml", entity="simonbenigeri"))
@@ -58,11 +71,12 @@ if __name__ == "__main__":
 
     parser.add_argument('--dataset', type=str, default='boston')
     parser.add_argument('--epochs', type=int, default=5)
-    parser.add_argument('--gpu', type=int, default=None)
-    # parser.add_argument('--learning-rate', type=float, default=1)
-    # parser.add_argument('--num-workers', type=int, default=1)
-    parser.add_argument('--batch-size', type=int, default=32)
-    parser.add_argument('--num-workers', type=int, default=1)
+    parser.add_argument('--learning-rate', type=float, default=0.01)
+    parser.add_argument('--momentum', type=float, default=0.9)
+    parser.add_argument('--batch-size', type=int, default=257)
+    parser.add_argument('--num-workers', type=int, default=4)
+    # parser.add_argument('--gpus', type=int, default=None)
 
     args = parser.parse_args()
-    main(args.dataset, args.epochs)
+    main(args.dataset, args.epochs, args.learning_rate, args.momentum, args.batch_size, args.num_workers)
+
