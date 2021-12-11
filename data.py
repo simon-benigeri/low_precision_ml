@@ -24,7 +24,7 @@ class RegressionDataset(Dataset):
 def make_dataloader(dataset: RegressionDataset, batch_size: int) -> DataLoader:
     return DataLoader(dataset, batch_size=batch_size, pin_memory=True, num_workers=2)
 
-def get_data(dataset: str='toy', test_split: float=0.4) -> Tuple[RegressionDataset, RegressionDataset]:
+def get_data(dataset: str='toy', test_split: float=0.4, random_state: int=42) -> Tuple[RegressionDataset, RegressionDataset]:
     if dataset == 'toy':
         # create dummy data for training
         x_values = [i for i in range(11)]
@@ -47,7 +47,7 @@ def get_data(dataset: str='toy', test_split: float=0.4) -> Tuple[RegressionDatas
     y = scaler.fit_transform(y)
 
     # Split the data into a training set and a test set
-    X_train, X_test, y_train, y_test, = train_test_split(X, y, test_size=test_split)
+    X_train, X_test, y_train, y_test, = train_test_split(X, y, test_size=test_split, random_state=random_state)
     # Split the test data into a validation set and a test set
     # X_val, X_test, y_val, y_test = train_test_split(X_test, y_test, test_size=val_split)
 

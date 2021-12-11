@@ -17,9 +17,8 @@ with open("quantize_config.yml", "r") as ymlfile:
 
 def make(config):
     # Make the data
-    train, test = get_data(dataset=config.dataset, test_split=config.test_split)
+    train, test = get_data(dataset=config.dataset, test_split=config.test_split, random_state=config.seed)
     train_dataloader = make_dataloader(train, batch_size=config.batch_size)
-    # val_dataloader = make_dataloader(val, batch_size=config.batch_size)
     test_dataloader = make_dataloader(test, batch_size=config.batch_size)
 
     # Make the quantizer
@@ -45,6 +44,7 @@ def model_pipeline(config) -> nn.Module:
     with wandb.init(project="low-precision-ml", entity="simonbenigeri", config=config, reinit=True):
         # access all HPs through wandb.config, so logging matches execution!
         config = wandb.config
+        torch.manual_seed(config.seed)
 
         # make the model, data, and optimization problem
         model, train_dataloader, test_dataloader, criterion, optimizer = make(config)
@@ -68,9 +68,10 @@ if __name__ == "__main__":
     parser.add_argument('--learning-rate', type=float, default=0.01)
     # parser.add_argument('--momentum', type=float, default=0.9)
     parser.add_argument('--batch-size', type=int, default=32)
+    parser.add_argument('--test-split', type=float, default=0.2)
     parser.add_argument('--precision', type=str, default='float32')
     parser.add_argument('--rounding', type=str, default=None)
-    # parser.add_argument('--quantize', type=bool, default=False)
+    parser.add_argument('--seed', type=int, default=42)
 
 
 
@@ -81,12 +82,12 @@ if __name__ == "__main__":
         epochs = args.epochs,
         learning_rate = args.learning_rate,
         batch_size = args.batch_size,
-        # quantize = args.quantize,
-        test_split= 0.4,
+        test_split= args.test_split,
         precision = args.precision,
         rounding = args.rounding,
         exp = quantize_config[args.precision]['exp'],
-        man = quantize_config[args.precision]['man']
-        #quantize_config=quantize_config[args.precision]
+        man = quantize_config[args.precision]['man'],
+        seed = args.seed
     )
+
     model_pipeline(config)

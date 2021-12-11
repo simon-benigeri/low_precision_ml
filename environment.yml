@@ -10,8 +10,6 @@ dependencies:
   - numpy
   - jupyterlab
   - pytorch
-  - torchvision
-  - pytorch-lightning
   - tqdm
   - black
   - matplotlib
@@ -24,6 +22,4 @@ dependencies:
   - pip:
     - qtorch
     - argparse
-    - pytorch-lightning-bolts
-    - gym
     
