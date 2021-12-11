@@ -1,22 +1,32 @@
 # Data processing
 QUANTIZE: True
 PRECISION: 'FP16'
-FP16: {
-        'exp': 6,
-        'man': 9,
-        'rounding': 'nearest'
+ROUNDING: ['nearest', 'stochastic']
+float32: {
+  'precision': 'float32',
+  'quantize': False,
+  'rounding': ''
 }
-FP8: {
-        'exp': 6,
-        'man': 9,
-        'rounding': 'nearest'
+float16: {
+  'precision': 'float16',
+  'quantize': True,
+  'exp': 6,
+  'man': 9,
+  'rounding': 'nearest'
 }
-ROUNDING: 'nearest' # or 'stochastic'
-OPTMIZER: {
-
+float8: {
+  'precision': 'float8',
+  'quantize': True,
+  'exp': 5,
+  'man': 2,
+  'rounding': 'nearest'
 }
+ # or 'stochastic'
 HYPERPARAMS: {
   'learning_rate': 0.01,
   'batch_size': 32,
   'epochs': 30
 }
+QUANTIZE_EXPERIMENTS: [
+  float32, float16, float8
+]
