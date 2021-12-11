@@ -64,7 +64,7 @@ This dataset is the scikit-learn [boston housing prices dataset](https://scikit-
 | Samples  total | 506 |
 | Dimensionality | 13 |
 | Features | real, positive |
-| Samples  total | real 5. - 50.|
+| Targets | real 5. - 50.|
 
 We ran the following commands:
 ```python
