@@ -100,3 +100,12 @@ python main.py --dataset diabetes --epochs 30 --learning-rate 0.01 --batch-size 
 #### Results:
 
 ![diabetes_results](images/diabetes_results.png)
+
+### `cifar10` dataset
+CIFAR10 dataset
+
+#### Results:
+
+## Writeup
+
+### Background
