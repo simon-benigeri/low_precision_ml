@@ -109,3 +109,9 @@ CIFAR10 dataset
 ## Writeup
 
 ### Background
+
+[STOCHASTIC ROUNDING AND ITS PROBABILISTIC BACKWARD
+ERROR ANALYSIS](https://epubs.siam.org/doi/pdf/10.1137/20M1334796)
+[A Simple and Efficient Stochastic Rounding Method for
+Training Neural Networks in Low Precision](https://arxiv.org/pdf/2103.13445)
+[QPyTorch: A Low-Precision Arithmetic Simulation Framework](https://arxiv.org/abs/1910.04540)
